@@ -1,3 +1,7 @@
+import { httpPost } from "./test";
+
+
+
 function findSolution(target) {
     function find(current, history) {
       if (current == target) {
@@ -11,5 +15,7 @@ function findSolution(target) {
     }
     return find(1, "1");
   }
+
+  httpPost()
   
   console.log(findSolution(15));
