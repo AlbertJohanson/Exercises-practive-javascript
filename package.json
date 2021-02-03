@@ -1,15 +1,24 @@
 {
   "name": "examexercise",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "ComTriple": "node CompareTriples.js"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "express": "4.17.1",
     "mathjs": "8.1.0"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlbertJohanson/Exercises-practive-javascript.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AlbertJohanson/Exercises-practive-javascript/issues"
+  },
+  "homepage": "https://github.com/AlbertJohanson/Exercises-practive-javascript#readme",
+  "description": ""
 }
