@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+<h1>Mountains</h1>
+
+<div id="mountains"></div>
+<script type="module">
+    import  {MOUNTAINS}  from "./data/mountains.js";
+
+    function buildTable(data) {
+
+        let table = document.createElement("table");
+
+        let fields = Object.keys(data[0]);
+
+        let headRow = document.createElement("tr");
+
+        fields.forEach(function(field) {
+            let headCell = document.createElement("th");
+            headCell.appendChild(document.createTextNode(field));
+            headRow.appendChild(headCell);
+        });
+
+        table.appendChild(headRow);
+
+        data.forEach(function(field) {
+            let row = document.createElement("tr")
+            fields.forEach(function(object) {
+                let cell = document.createElement("td");
+                cell.appendChild(document.createTextNode(object[field]))
+                if(typeof object[field] == "number"){
+                    cell.style.textAlign ="rigth";
+                }
+                row.appendChild(cell);
+            });
+            table.appendChild(row)
+        });
+
+        return table
+    }
+    document.querySelector("#mountains")
+    .appendChild(buildTable(MOUNTAINS))
+</script>
+</body>
+</html>
