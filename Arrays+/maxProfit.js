@@ -6,7 +6,7 @@ const maxProfit = function(prices) {
     }
 
     let maxProfit = 0;
-    let maxStock = Math.max(prices[prices.length - 1], prices[prices.length -2 ]);
+    let maxStock =  Math.max(prices[prices.length - 1], prices[prices.length -2 ]);
     for (let i = prices.length - 2;i > -1 ;  i--) {
         let profit = maxStock - prices[i]
         maxStock = Math.max(maxStock, prices[i])
