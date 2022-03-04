@@ -18,19 +18,19 @@ const twoSumII = (nums, target) => {
     //O(n * logN)
 
     let left = 0;
-    let rigth = nums.length - 1;
+    let right = nums.length - 1;
 
-    while(left < rigth) {
-        let sum = nums[left] + nums[rigth]
+    while(left < right) {
+        let sum = nums[left] + nums[right]
 
         if(sum === target) {
-            return [left + 1, rigth + 1]
+            return [left + 1, right + 1]
         }
         if(target > sum) {
             left ++;
         } else 
         {
-            rigth --;
+            right --;
         }
     }
 
