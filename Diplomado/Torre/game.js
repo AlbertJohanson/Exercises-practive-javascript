@@ -1,116 +1,61 @@
-const height = "40px";
+var disks, towers, draggedone;
 
-var body;
-
-var square1 = new Square(true);
-var square2 = new Square(false);
-var square3 = new Square(false);
-
-function createDiv(){
-    var box = document.createElement("div");
-    return box
+function init(){
+  disks = document.getElementsByClassName("disk");
+  towers = document.getElementsByClassName("tower");
+  for (var i = 0;i<disks.length;i++){
+    disks[i].draggable = i==0;
+    disks[i].addEventListener("dragstart",dragstart);
+  }
+  for (var i = 0;i<towers.length;i++){
+    towers[i].addEventListener("dragover", dragover);
+    towers[i].addEventListener("drop", drop);
+    towers[i].addEventListener("dragenter", dragenter);
+  }
 }
 
+function dragstart(ev) {
+  // write Diks-ID into dataTransfer Object
+  ev.dataTransfer.setData('text', ev.target.id);
+  // since dataTransfer is protected in dragenter we have to have a variable
+  draggedone = ev.target.id;
+}
 
-function FillContent(){
-    var content =  new Array();
+function dragenter (ev) {
+  // get tower that has been entered by drag and get disk-ID
+  var tower = ev.currentTarget; 
+  var disk = draggedone;
+  // get disks that are already on tower
+  var disksOnTower = tower.getElementsByClassName("disk"); 
+  if (disksOnTower.length==0 || disksOnTower[0].id>disk){
+    // here if no disks yet on tower or the top disk is bigger than the dragged disk  
+    tower.diskCanBeDroppedHere = true; // we have to remember it for dragover
+    ev.preventDefault(); // yes please!
+    return;
+  }
+  tower.diskCanBeDroppedHere = false; // sorry no drop allowed here
+}
 
-    for (var i = 0; i < 5; i++) {
-        content[i] = new Fill();
+function dragover(ev){
+  if (ev.currentTarget.diskCanBeDroppedHere)
+      ev.preventDefault();// if we may drop here ...
+}
+  
+function drop(ev) {
+  // find disk and tower involved
+  var tower = ev.currentTarget;
+  var disk = document.getElementById(ev.dataTransfer.getData('text'));
+  ev.dataTransfer.dropEffect = 'move';
+  // put disk on top of tower
+  tower.insertBefore(disk,tower.firstChild);
+  // re-adjust draggability
+  for (var i=0; i<towers.length;i++){ // for all towers
+    var e = towers[i].getElementsByClassName("disk"); // get disks
+    if (e.length) e[0].draggable = true; // iop disk is draggable
+    for (var j=1;j<e.length;j++){
+      e[j].draggable = false; // all others are not
     }
-
-
-    return content
+  }
+  ev.preventDefault(); // ... whatever the default is!!!
 }
-
-
-function FillTokens(){
-    var content = new Array();
-
-    content[0] = new Fill();
-    content[1] = new TokensS();
-    content[2] = new TokensM();
-    content[3] = new TokensL();
-    content[4] = new TokensXL();
-
-
-    return content
-}
-
-
-function TokensS(){
-    this.box = createDiv();
-    this.box.style.width = "10%";
-    this.box.style.height = height;
-    this.box.style.backgroundColor = "#0088CC";
-    this.box.style.marginLeft = "auto";
-    this.box.style.marginRight = "auto";
-}
-
-function TokensM(){
-    this.box = createDiv();
-    this.box.style.width = "30%";
-    this.box.style.height = height;
-    this.box.style.backgroundColor = "#979797";
-    this.box.style.marginLeft = "auto";
-    this.box.style.marginRight = "auto";
-}
-
-function TokensL(){
-    this.box = createDiv();
-    this.box.style.width = "50%";
-    this.box.style.height = height;
-    this.box.style.backgroundColor = "#66666666";
-    this.box.style.marginLeft = "auto";
-    this.box.style.marginRight = "auto";
-}
-
-function TokensXL(){
-    this.box = createDiv();
-    this.box.style.width = "70%";
-    this.box.style.height = height;
-    this.box.style.backgroundColor = "black";
-    this.box.style.marginLeft = "auto";
-    this.box.style.marginRight = "auto";
-}
-
-function Fill(){
-    this.box = createDiv();
-    this.box.style.width = "100%";
-    this.box.style.height = height;
-}
-
-function Square(InitialBox){
-    this.box = createDiv();
-    this.box.style.width = "28%";
-    this.box.style.height = "200px";
-    this.box.style.marginLeft = "4%";
-    this.box.style.borderWidth = "2%";
-    this.box.style.border = "solid black";
-    this.box.style.float = "left";
-    this.content;
-
-    if(InitialBox){
-        this.content = FillTokens();
-    } else {
-        this.content = FillContent()
-    }
-
-    for (var i = 0; i < this.content.length; i++) {
-        this.box.appendChild(this.content[i].box);
-    }
-}
-
-
-
-function start(){
-    body = document.getElementsByTagName("body")[0];
-    
-    body.appendChild(square1.box);
-    body.appendChild(square2.box);
-    body.appendChild(square3.box);
-}
-
-
-window.addEventListener("load", start, false);
-
+init();
